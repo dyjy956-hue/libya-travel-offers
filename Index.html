@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>منصة عروض السفر والسياحة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-5">
+    <h1 class="text-3xl font-bold text-center mb-10 text-blue-800">أحدث العروض السياحية</h1>
+    
+    <div id="offers-container" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+
+    <script>
+        // ضع رابط الـ API الخاص بك هنا
+        const apiUrl = "https://script.google.com/macros/s/AKfycbzU5ToaHPv0Ak0XU--NEO6WNJVOqAlyh6ktO5aseg7KEGGWcnNobT-kGSBOccN4wkOXAA/exec";
+
+        async function fetchOffers() {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            const container = document.getElementById('offers-container');
+
+            data.forEach(offer => {
+                const card = `
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden border">
+                        <img src="${offer.image}" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h2 class="text-xl font-bold">${offer.title}</h2>
+                            <p class="text-gray-600">${offer.type} - ${offer.dest}</p>
+                            <p class="text-blue-600 font-bold text-2xl my-2">${offer.price} د.ل</p>
+                            <p class="text-sm text-gray-500 mb-4">${offer.desc}</p>
+                            <a href="https://wa.me/${offer.phone}?text=مرحباً، أود الاستفسار عن عرض ${offer.title}" 
+                               class="block text-center bg-green-600 text-white py-2 rounded font-bold hover:bg-green-700">
+                               احجز الآن عبر واتساب
+                            </a>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+        fetchOffers();
+    </script>
+</body>
+</html>
